@@ -120,6 +120,7 @@ class ColumnSchema extends BaseObject
      * @var string комментарий к этой колонке. Не все СУБД поддерживают это.
      */
     public $comment;
+    public $multiple;
 
 
     /**
@@ -233,6 +234,8 @@ class ColumnSchema extends BaseObject
 //                    return $value;
 //                }
 
+                \Yii::warning($value, 'typecast_$value');
+                \Yii::warning(ArrayHelper::toArray($this), 'typecast_100');
                 return (string)$value;
             case 'integer':
                 return (int)$value;
@@ -278,6 +281,7 @@ class ColumnSchema extends BaseObject
         $this->name = $key;
         $this->allowNull = !ArrayHelper::getValue($columnData, 'isRequired');
         $this->type = ArrayHelper::getValue($columnData, 'type');
+        $this->multiple = ArrayHelper::getValue($columnData, 'isMultiple');
         $this->phpType = $this->getPhpType();
 //                    'dbType',
         $this->defaultValue = ArrayHelper::getValue($columnData, 'settings.DEFAULT_VALUE');
@@ -336,6 +340,9 @@ class ColumnSchema extends BaseObject
             self::TYPE_ENUMERATION => 'array',
             self::TYPE_CRM_MULTIFIELD => 'array',
         ];
+        if($this->multiple){
+            return 'array';
+        }
         if (isset($typeMap[$this->type])) {
             return $typeMap[$this->type];
         }
