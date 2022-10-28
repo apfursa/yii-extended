@@ -234,8 +234,6 @@ class ColumnSchema extends BaseObject
 //                    return $value;
 //                }
 
-                \Yii::warning($value, 'typecast_$value');
-                \Yii::warning(ArrayHelper::toArray($this), 'typecast_100');
                 return (string)$value;
             case 'integer':
                 return (int)$value;
